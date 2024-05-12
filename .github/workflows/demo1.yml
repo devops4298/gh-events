@@ -3,7 +3,18 @@ on:
   pull_request:
     type:
       -opened
+    branches:
+        - main # covers main branch
+        - 'dev-*' #covers any branch starts with dev-
+        - 'feature/**' # covers all the branches which is further seperated by / example- feature/newadd/button
   workflow_dispatch:
+  push:
+    branches:
+      - main # covers main branch
+      - 'dev-*' #covers any branch starts with dev-
+      - 'feature/**' # covers all the branches which is further seperated by / example- feature/newadd/button
+    paths-ignore:
+      - '.github/workflows/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,7 +23,7 @@ jobs:
         run: echo "${{ toJSON(github.event) }}"
       - name: Get code
         uses: actions/checkout@v3
-      - name: Install dependencies
+     - name: Install dependencies
         run: npm ci
       - name: Test code
         run: npm run test
